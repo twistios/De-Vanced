@@ -116,6 +116,13 @@ val changePackageNamePatch = resourcePatch(
                     val provider = node as Element
 
                     val authorities = provider.getAttribute("android:authorities")
+                    if (authorities.equals("@string/facebook_authorities")){
+                        Logger.getLogger(this::class.java.name).info("FOUND: matching entry with `android:authorities` set to `@string/facebook_authorities`.")
+                        provider.setAttribute("android:authorities", "${newPackageName}.com.facebook.app.FacebookContentProvider")
+                        continue
+                    } else {
+                        Logger.getLogger(this::class.java.name).info("NOT FOUND: matching entry with `android:authorities` set to `@string/facebook_authorities`.")
+                    }
                     if (!authorities.startsWith("$packageName.")) continue
 
                     provider.setAttribute("android:authorities", authorities.replace(packageName, newPackageName))
